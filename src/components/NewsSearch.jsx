@@ -9,12 +9,14 @@ import axios from 'axios'
    }
 
    onChangeHandler = (e) => {
+    
      this.setState({ searchTerm: e.target.value})
    }
 
   async performSearch() {
-     const result =  await axios.get("http://newsapi.org/v2/everything?q=${this.state.searchItem}&from=2020-07-12&sortBy=publishedAt&apiKey=");
-     this.setState({
+   
+     const result =  await axios.get(`http://newsapi.org/v2/everything?q=${this.state.searchTerm}&from=2020-07-12&sortBy=publishedAt&apiKey=eae1a29865074492af4d8f77081210c9`);
+     this.setState({ 
        articles: result.data.articles
      })
    }
@@ -26,27 +28,30 @@ let  showSearchResult = this.state.articles.map(article => {
   )
 })
     return (
+      <>
       <div>
-        
+
+       
       <Input
         type="text"
         data-cy="news-search"
         placeholder="Input search term"
         name="search"
-        value={this.state.serachTerm}
-        onChange={this.onChangehandler} />
+        value={this.state.searchTerm}
+        onChange={this.onChangeHandler} />
        
       <Button
-      name="search"
-      onClick={this.showSearchResult}
+      onClick={this.performSearch.bind(this)}
         data-cy="search-submit">
         Search
         </Button>
-       
-        <ul>
-          {showSearchResult}
-        </ul>
+
     </div>
+    
+            <ul>
+            <li>{showSearchResult}</li>
+          </ul>
+          </>
     );
   }
 }
